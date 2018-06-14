@@ -1,8 +1,9 @@
 require("dotenv").config();
 var keys = require("./keys.js");
 var twitter = require("twitter");
+var SpotifyWebApi = require('spotify-web-api-node');
 
-// var spotify = new Spotify(keys.spotify);
+// var spotify = new spotify(keys.spotify);
 var client = new twitter(keys.twitter);
 
 var myTweets = "my-tweets";
@@ -21,6 +22,7 @@ if(process.argv[2]== myTweets){
 //     console.log(response);  // Raw response object.
 //   });
 
+//Twitter Function
 function postTweet() {
   client.get("statuses/user_timeline", function(error, tweets, response) {
     if (error) {
@@ -34,3 +36,14 @@ function postTweet() {
     }
   });
 }
+
+// Spotify API
+
+// spotifyApi.setAccessToken(spotify.id).then(
+//   function(data) {
+//     console.log('Artist albums', data.body);
+//   },
+//   function(err) {
+//     console.error(err);
+//   }
+// );
