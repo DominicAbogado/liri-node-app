@@ -6,6 +6,7 @@ var args = process.argv.slice(2)
   
   // Then run a request to the OMDB API with the movie specified
   //OMDB Functionality
+  askMovie()
 function askMovie(){
 inquirer
   .prompt([
