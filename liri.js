@@ -3,6 +3,7 @@ var keys = require("./keys.js");
 var twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 var request = require("request");
+var fs = require("fs");
 
 var inquirer = require("inquirer");
 
@@ -30,6 +31,7 @@ function postTweet() {
   });
 }
 
+
 // Spotify Function
 function askSong(){
   inquirer
@@ -39,6 +41,7 @@ function askSong(){
         message:
           "Please type in the name of a song",
         name: "songTitle",
+        default: "I want it that way"
       }
     ])
     .then(function(ir) {
@@ -56,7 +59,7 @@ spotify
   }
   console.log("------------------------------------------");
   console.log("Album: "+ response.tracks.items[0].album.name);
-
+  console.log("------------------------------------------");
 })
 .catch(function(err) {
   console.log('Error Occurred: ' + err);
@@ -73,6 +76,7 @@ function askMovie(){
         message:
           "Please type in the name of a movie",
         name: "movieTitle",
+        default: "Mr. Nobody"
       }
     ])
     .then(function(ir) {
@@ -114,6 +118,30 @@ function askMovie(){
     });
   }
 
+  //Random Function
+function random(){
+  fs.readFile("random.txt", "utf8", function(err, data){
+    if(err){
+      console.log(err);
+    }
+    var dataArr = data.split(",")
+    console.log(dataArr);
+
+     var num = Math.floor(Math.random() * 3);
+      var randAct = dataArr[num];
+    if (num == 0 ){
+      postTweet();
+      console.log(randAct[num]);
+    } else if (num == 1 ){
+      askMovie();
+      console.log(randAct[num]);
+    } else if (num == 2 ){
+      askSong();
+      console.log(randAct[num]);
+    }
+
+  });
+};
 //LIRI Inquire Function
 inquirer
   .prompt([
@@ -126,7 +154,7 @@ inquirer
     {
       type: "list",
       message: "Please choose one of the following commands:",
-      choices: ["My-Tweets","My-Movies", "My-Songs", "end game"],
+      choices: ["My-Tweets","My-Movies", "My-Songs", "Random"],
       name: "action"
     }
   ])
@@ -138,6 +166,8 @@ inquirer
       askMovie();
     } else if (ir.action === "My-Songs") {
       askSong();
+    } else if (ir.action === "Random") {
+      random();
     } else {
       console.log("Thank you for playing!");
     }
